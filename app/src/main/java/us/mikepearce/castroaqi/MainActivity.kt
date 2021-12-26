@@ -9,9 +9,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.View
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.TextView
+import us.mikepearce.castroaqi.R.id.webview
+
+
 
 class MainActivity : Activity() {
     private lateinit var myWebView: WebView
@@ -32,6 +34,22 @@ class MainActivity : Activity() {
                 return true
             }
         }
+        myWebView.settings.domStorageEnabled = true;
+        myWebView.webChromeClient = (object : WebChromeClient() {
+            override fun onJsPrompt(
+                view: WebView?,
+                url: String?,
+                message: String?,
+                defaultValue: String?,
+                result: JsPromptResult?
+            ): Boolean {
+                return super.onJsPrompt(view, url, message, defaultValue, result)
+            }
+            override fun onJsAlert(view: WebView, url: String, message: String, result: JsResult): Boolean {
+                //Required functionality here
+                return super.onJsAlert(view, url, message, result)
+            }
+        })
 
         loadWebView()
     }
@@ -70,7 +88,7 @@ class MainActivity : Activity() {
             myWebView.visibility = View.VISIBLE
             offlineView.visibility = View.INVISIBLE
 
-            myWebView.loadUrl("https://www.mikepearce.us/aqi")
+            myWebView.loadUrl("https://www.roypearce.us/aqi")
         } else {
             disconnected()
         }
